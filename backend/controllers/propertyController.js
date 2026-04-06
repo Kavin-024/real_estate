@@ -1,5 +1,6 @@
 const Property = require("../models/Property");
 const { validationResult } = require("express-validator");
+const { sendNewPropertyEmail } = require("../utils/sendEmail");
 
 // @route  POST /api/properties
 // @access Private (seller only)
@@ -18,6 +19,24 @@ const createProperty = async (req, res) => {
       ...req.body,
     });
 
+    // Send email notification to admin
+    // We use try/catch separately so email failure doesn't fail the whole request
+    try {
+      await sendNewPropertyEmail({
+        sellerName: req.seller.name,
+        sellerEmail: req.seller.email,
+        sellerPhone: req.seller.phone,
+        propertyTitle: property.title,
+        propertyLocation: `${property.location.district}, ${property.location.state}`,
+        propertyPrice: property.price.total,
+        propertyType: property.landType,
+        propertyId: property._id,
+      });
+    } catch (emailError) {
+      // Email failed but property was created — just log it, don't crash
+      console.error("Email notification failed:", emailError.message);
+    }
+
     res.status(201).json({
       message: "Property listed successfully",
       property,
@@ -29,6 +48,7 @@ const createProperty = async (req, res) => {
     });
   }
 };
+
 
 // @route  GET /api/properties/my
 // @access Private (seller only — their own listings)
