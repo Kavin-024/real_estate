@@ -58,11 +58,10 @@ const propertyRules = [
 
 // Public routes
 router.get("/", getAllProperties);
-router.get("/:id", getPropertyById);
-
 // Private routes (seller must be logged in)
 router.post("/", protect, propertyRules, createProperty);
 router.get("/my/listings", protect, getMyProperties);
+router.get("/:id", getPropertyById);
 router.put("/:id", protect, updateProperty);
 router.delete("/:id", protect, deleteProperty);
 

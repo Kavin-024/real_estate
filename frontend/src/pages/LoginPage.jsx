@@ -19,14 +19,18 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
-      await login(formData);
-      navigate("/dashboard");
+        const data = await login(formData);
+        if (data.seller.isAdmin) {
+        navigate("/admin");
+        } else {
+        navigate("/dashboard");
+        }
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Try again.");
+        setError(err.response?.data?.message || "Login failed. Try again.");
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+    };
 
   return (
     <div style={styles.page}>

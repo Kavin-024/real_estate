@@ -43,6 +43,7 @@ const registerSeller = async (req, res) => {
         id: seller._id,
         name: seller.name,
         email: seller.email,
+        
       },
     });
   } catch (error) {
@@ -93,6 +94,7 @@ const loginSeller = async (req, res) => {
         id: seller._id,
         name: seller.name,
         email: seller.email,
+        isAdmin: seller.isAdmin,
       },
     });
   } catch (error) {
