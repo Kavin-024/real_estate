@@ -62,62 +62,64 @@ export default function HomePage() {
       {/* Navbar */}
       <div style={styles.navbar}>
         <h1 style={styles.logo}>🏡 RealEstate</h1>
-        <div style={styles.navButtons}>
+        <div>
           <button onClick={() => navigate("/login")} style={styles.loginBtn}>
             Seller Login
           </button>
           <button onClick={() => navigate("/register")} style={styles.registerBtn}>
-            Register as Seller
+            Register
           </button>
         </div>
       </div>
 
       {/* Hero */}
       <div style={styles.hero}>
-        <h2 style={styles.heroTitle}>Find Your Perfect Land</h2>
-        <p style={styles.heroSubtitle}>
-          Browse verified land listings across Tamil Nadu
-        </p>
+        <h2 style={styles.heroTitle}>Discover Premium Lands</h2>
+        <p style={styles.heroSubtitle}>Explore verified properties across Tamil Nadu</p>
+
+        {/* Filters */}
+        <div style={styles.filterBox}>
+          <select name="landType" value={filters.landType} onChange={handleFilter} style={styles.input}>
+            <option value="">All Types</option>
+            <option value="residential">Residential</option>
+            <option value="agricultural">Agricultural</option>
+            <option value="commercial">Commercial</option>
+            <option value="industrial">Industrial</option>
+          </select>
+
+          <input
+            name="district"
+            value={filters.district}
+            onChange={handleFilter}
+            placeholder="Search district..."
+            style={styles.input}
+          />
+
+          <input
+            name="maxPrice"
+            type="number"
+            value={filters.maxPrice}
+            onChange={handleFilter}
+            placeholder="Max Price"
+            style={styles.input}
+          />
+
+          <button onClick={clearFilters} style={styles.clearBtn}>
+            Clear
+          </button>
+        </div>
       </div>
 
-      {/* Filters */}
-      <div style={styles.filterBar}>
-        <select name="landType" value={filters.landType} onChange={handleFilter} style={styles.filterInput}>
-          <option value="">All Types</option>
-          <option value="residential">Residential</option>
-          <option value="agricultural">Agricultural</option>
-          <option value="commercial">Commercial</option>
-          <option value="industrial">Industrial</option>
-        </select>
-        <input
-          name="district"
-          value={filters.district}
-          onChange={handleFilter}
-          placeholder="Search by district..."
-          style={styles.filterInput}
-        />
-        <input
-          name="maxPrice"
-          type="number"
-          value={filters.maxPrice}
-          onChange={handleFilter}
-          placeholder="Max price (₹)"
-          style={styles.filterInput}
-        />
-        <button onClick={clearFilters} style={styles.clearBtn}>
-          Clear
-        </button>
-      </div>
-
-      {/* Results count */}
+      {/* Content */}
       <div style={styles.content}>
-        <p style={styles.resultCount}>
-          {loading ? "Loading..." : `${filtered.length} properties found`}
-        </p>
+        <h3 style={styles.result}>
+          {loading ? "Loading..." : `${filtered.length} Properties Found`}
+        </h3>
 
-        {/* Grid */}
-        {!loading && filtered.length === 0 && (
-          <div style={styles.empty}>No properties found matching your filters.</div>
+        {filtered.length === 0 && !loading && (
+          <div style={styles.empty}>
+            No properties found matching your filters.
+          </div>
         )}
 
         <div style={styles.grid}>
@@ -126,31 +128,25 @@ export default function HomePage() {
               key={p._id}
               style={styles.card}
               onClick={() => navigate(`/property/${p._id}`)}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.03)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+              }}
             >
-              <div style={styles.cardTop}>
-                <span style={styles.badge}>{p.landType}</span>
-                {p.price.isNegotiable && (
-                  <span style={styles.negotiable}>Negotiable</span>
-                )}
+              <div style={styles.cardHeader}>
+                <span>{p.landType}</span>
+                {p.price.isNegotiable && <span style={styles.neg}>Negotiable</span>}
               </div>
-              <h3 style={styles.cardTitle}>{p.title}</h3>
-              <p style={styles.cardLocation}>
-                📍 {p.location.district}, {p.location.state}
-              </p>
-              <p style={styles.cardArea}>
-                📐 {p.area.value} {p.area.unit}
-              </p>
-              <p style={styles.cardPrice}>
-                ₹ {p.price.total.toLocaleString("en-IN")}
-              </p>
-              <div style={styles.cardFeatures}>
-                {p.features.electricity && <span style={styles.tag}>⚡ Electricity</span>}
-                {p.features.roadAccess && <span style={styles.tag}>🛣️ Road Access</span>}
-                {p.features.waterSource !== "none" && (
-                  <span style={styles.tag}>💧 {p.features.waterSource}</span>
-                )}
-              </div>
-              <button style={styles.viewBtn}>View Details →</button>
+
+              <h3 style={styles.title}>{p.title}</h3>
+              <p style={styles.text}>📍 {p.location.district}</p>
+              <p style={styles.text}>📐 {p.area.value} {p.area.unit}</p>
+
+              <h2 style={styles.price}>₹ {p.price.total.toLocaleString("en-IN")}</h2>
+
+              <button style={styles.btn}>View Details</button>
             </div>
           ))}
         </div>
@@ -160,88 +156,177 @@ export default function HomePage() {
 }
 
 const styles = {
-  page: { minHeight: "100vh", backgroundColor: "#f0f4f8" },
+  page: {
+    minHeight: "100vh",
+    background: "#f8fafc",
+    fontFamily: "'Inter', sans-serif",
+    color: "#1e293b",
+  },
+
   navbar: {
-    backgroundColor: "#fff",
-    padding: "16px 40px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+    padding: "18px 40px",
+    background: "#ffffff",
+    borderBottom: "1px solid #e2e8f0",
+    position: "sticky",
+    top: 0,
+    zIndex: 10,
   },
-  logo: { margin: 0, fontSize: "22px", fontWeight: "700", color: "#2b6cb0" },
-  navButtons: { display: "flex", gap: "12px" },
+
+  logo: {
+    fontSize: "24px",
+    fontWeight: "800",
+    color: "#2563eb",
+  },
+
   loginBtn: {
-    padding: "8px 18px", backgroundColor: "#fff", color: "#2b6cb0",
-    border: "1px solid #2b6cb0", borderRadius: "8px", fontSize: "14px",
-    fontWeight: "600", cursor: "pointer",
+    marginRight: "10px",
+    padding: "8px 18px",
+    background: "#fff",
+    border: "1px solid #2563eb",
+    color: "#2563eb",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontWeight: "600",
   },
+
   registerBtn: {
-    padding: "8px 18px", backgroundColor: "#2b6cb0", color: "#fff",
-    border: "none", borderRadius: "8px", fontSize: "14px",
-    fontWeight: "600", cursor: "pointer",
+    padding: "8px 18px",
+    background: "#2563eb",
+    border: "none",
+    color: "#fff",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontWeight: "600",
   },
+
   hero: {
-    backgroundColor: "#2b6cb0",
-    padding: "50px 40px",
+    background: "linear-gradient(to right, #2563eb, #3b82f6)",
+    padding: "70px 20px 100px",
     textAlign: "center",
+    color: "#fff",
   },
-  heroTitle: { margin: "0 0 10px", fontSize: "32px", fontWeight: "700", color: "#fff" },
-  heroSubtitle: { margin: 0, fontSize: "16px", color: "#bee3f8" },
-  filterBar: {
-    backgroundColor: "#fff",
-    padding: "16px 40px",
+
+  heroTitle: {
+    fontSize: "40px",
+    fontWeight: "800",
+  },
+
+  heroSubtitle: {
+    marginTop: "10px",
+    fontSize: "16px",
+    opacity: 0.9,
+  },
+
+  filterBox: {
+    marginTop: "-40px",
+    background: "#fff",
+    padding: "20px",
+    borderRadius: "14px",
     display: "flex",
     gap: "12px",
-    alignItems: "center",
-    boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+    justifyContent: "center",
     flexWrap: "wrap",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
+    maxWidth: "1000px",
+    marginInline: "auto",
   },
-  filterInput: {
-    padding: "9px 12px", borderRadius: "8px", border: "1px solid #e2e8f0",
-    fontSize: "14px", outline: "none", minWidth: "160px",
+
+  input: {
+    padding: "12px 14px",
+    borderRadius: "10px",
+    border: "1px solid #e2e8f0",
+    minWidth: "180px",
+    fontSize: "14px",
+    outline: "none",
   },
+
   clearBtn: {
-    padding: "9px 16px", backgroundColor: "#f7fafc", border: "1px solid #e2e8f0",
-    borderRadius: "8px", fontSize: "14px", cursor: "pointer", color: "#4a5568",
+    padding: "12px 16px",
+    background: "#f1f5f9",
+    border: "none",
+    borderRadius: "10px",
+    cursor: "pointer",
+    fontWeight: "500",
   },
-  content: { padding: "24px 40px" },
-  resultCount: { fontSize: "14px", color: "#718096", marginBottom: "16px" },
+
+  content: {
+    padding: "40px",
+    maxWidth: "1300px",
+    margin: "auto",
+  },
+
+  result: {
+    marginBottom: "20px",
+    fontSize: "15px",
+    color: "#64748b",
+  },
+
   empty: {
-    textAlign: "center", padding: "60px", backgroundColor: "#fff",
-    borderRadius: "12px", color: "#718096",
+    background: "#ffffff",
+    padding: "60px",
+    textAlign: "center",
+    borderRadius: "16px",
+    color: "#64748b",
+    boxShadow: "0 6px 20px rgba(0,0,0,0.05)",
   },
+
   grid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-    gap: "20px",
+    gap: "24px",
   },
+
   card: {
-    backgroundColor: "#fff", borderRadius: "12px", padding: "20px",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.07)", cursor: "pointer",
-    transition: "transform 0.2s",
+    background: "#ffffff",
+    padding: "20px",
+    borderRadius: "16px",
+    boxShadow: "0 6px 20px rgba(0,0,0,0.06)",
+    transition: "all 0.3s ease",
+    cursor: "pointer",
   },
-  cardTop: { display: "flex", justifyContent: "space-between", marginBottom: "10px" },
-  badge: {
-    padding: "3px 10px", backgroundColor: "#ebf8ff", color: "#2b6cb0",
-    borderRadius: "20px", fontSize: "12px", fontWeight: "500", textTransform: "capitalize",
+
+  cardHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: "10px",
+    fontSize: "12px",
   },
-  negotiable: {
-    padding: "3px 10px", backgroundColor: "#f0fff4", color: "#38a169",
-    borderRadius: "20px", fontSize: "12px", fontWeight: "500",
+
+  neg: {
+    color: "#16a34a",
+    fontWeight: "600",
   },
-  cardTitle: { margin: "0 0 8px", fontSize: "16px", fontWeight: "600", color: "#2d3748" },
-  cardLocation: { margin: "0 0 4px", fontSize: "13px", color: "#718096" },
-  cardArea: { margin: "0 0 4px", fontSize: "13px", color: "#718096" },
-  cardPrice: { margin: "8px 0", fontSize: "18px", fontWeight: "700", color: "#2b6cb0" },
-  cardFeatures: { display: "flex", gap: "6px", flexWrap: "wrap", margin: "8px 0 12px" },
-  tag: {
-    padding: "3px 8px", backgroundColor: "#f7fafc", border: "1px solid #e2e8f0",
-    borderRadius: "6px", fontSize: "11px", color: "#4a5568",
+
+  title: {
+    fontSize: "18px",
+    fontWeight: "700",
+    marginBottom: "6px",
   },
-  viewBtn: {
-    width: "100%", padding: "9px", backgroundColor: "#2b6cb0", color: "#fff",
-    border: "none", borderRadius: "8px", fontSize: "13px",
-    fontWeight: "600", cursor: "pointer",
+
+  text: {
+    fontSize: "13px",
+    color: "#64748b",
+  },
+
+  price: {
+    marginTop: "10px",
+    fontSize: "20px",
+    fontWeight: "800",
+    color: "#2563eb",
+  },
+
+  btn: {
+    marginTop: "12px",
+    width: "100%",
+    padding: "10px",
+    background: "#2563eb",
+    border: "none",
+    borderRadius: "10px",
+    color: "#fff",
+    fontWeight: "600",
+    cursor: "pointer",
   },
 };

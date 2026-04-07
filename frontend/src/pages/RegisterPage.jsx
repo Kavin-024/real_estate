@@ -13,8 +13,13 @@ export default function RegisterPage() {
     password: "",
   });
 
-  const [errors, setErrors] = useState([]);   // changed from single error to array
+  const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const focusStyle = {
+    onFocus: (e) => (e.target.style.border = "1px solid #2563eb"),
+    onBlur: (e) => (e.target.style.border = "1px solid #e2e8f0"),
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,18 +27,15 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors([]);          // clear old errors
+    setErrors([]);
     setLoading(true);
     try {
       await register(formData);
       navigate("/login");
     } catch (err) {
       const data = err.response?.data;
-      if (data?.errors) {
-        setErrors(data.errors);   // array of validation messages from backend
-      } else {
-        setErrors([data?.message || "Registration failed. Try again."]);
-      }
+      if (data?.errors) setErrors(data.errors);
+      else setErrors([data?.message || "Registration failed. Try again."]);
     } finally {
       setLoading(false);
     }
@@ -42,10 +44,9 @@ export default function RegisterPage() {
   return (
     <div style={styles.page}>
       <div style={styles.card}>
-        <h2 style={styles.title}>Create Seller Account</h2>
+        <h2 style={styles.title}>Create Account </h2>
         <p style={styles.subtitle}>Start listing your properties today</p>
 
-        {/* Error messages — shows all validation errors as a list */}
         {errors.length > 0 && (
           <div style={styles.error}>
             {errors.map((e, i) => (
@@ -62,9 +63,9 @@ export default function RegisterPage() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Your full name"
-              required
               style={styles.input}
+              {...focusStyle}
+              required
             />
           </div>
 
@@ -75,9 +76,9 @@ export default function RegisterPage() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="you@email.com"
-              required
               style={styles.input}
+              {...focusStyle}
+              required
             />
           </div>
 
@@ -88,9 +89,9 @@ export default function RegisterPage() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="10-digit mobile number"
-              required
               style={styles.input}
+              {...focusStyle}
+              required
             />
           </div>
 
@@ -101,9 +102,9 @@ export default function RegisterPage() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Min 6 chars, one uppercase, one number"
-              required
               style={styles.input}
+              {...focusStyle}
+              required
             />
           </div>
 
@@ -129,81 +130,91 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f0f4f8",
+    background: "linear-gradient(to right, #eef2ff, #f8fafc)",
+    fontFamily: "'Inter', sans-serif",
   },
+
   card: {
-    backgroundColor: "#fff",
+    background: "#ffffff",
     padding: "40px",
-    borderRadius: "12px",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+    borderRadius: "18px",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
     width: "100%",
     maxWidth: "420px",
   },
+
   title: {
-    margin: "0 0 6px",
-    fontSize: "24px",
-    fontWeight: "600",
-    color: "#1a202c",
+    fontSize: "26px",
+    fontWeight: "800",
+    marginBottom: "6px",
+    color: "#1e293b",
   },
+
   subtitle: {
-    margin: "0 0 24px",
     fontSize: "14px",
-    color: "#718096",
+    color: "#64748b",
+    marginBottom: "24px",
   },
+
   error: {
-    backgroundColor: "#fff5f5",
-    border: "1px solid #feb2b2",
-    color: "#c53030",
-    padding: "10px 14px",
-    borderRadius: "8px",
-    fontSize: "14px",
+    background: "#fee2e2",
+    border: "1px solid #fecaca",
+    color: "#b91c1c",
+    padding: "12px",
+    borderRadius: "10px",
     marginBottom: "16px",
-    display: "flex",
-    flexDirection: "column",
-    gap: "4px",
   },
+
   form: {
     display: "flex",
     flexDirection: "column",
     gap: "16px",
   },
+
   field: {
     display: "flex",
     flexDirection: "column",
     gap: "6px",
   },
+
   label: {
-    fontSize: "14px",
-    fontWeight: "500",
-    color: "#4a5568",
+    fontSize: "13px",
+    fontWeight: "600",
+    color: "#334155",
   },
+
   input: {
-    padding: "10px 14px",
-    borderRadius: "8px",
+    padding: "12px 14px",
+    borderRadius: "10px",
     border: "1px solid #e2e8f0",
     fontSize: "14px",
     outline: "none",
+    transition: "0.2s",
   },
+
   button: {
-    marginTop: "8px",
-    padding: "12px",
-    backgroundColor: "#2b6cb0",
+    marginTop: "10px",
+    padding: "14px",
+    background: "linear-gradient(to right, #2563eb, #3b82f6)",
     color: "#fff",
     border: "none",
-    borderRadius: "8px",
+    borderRadius: "12px",
     fontSize: "15px",
-    fontWeight: "600",
+    fontWeight: "700",
     cursor: "pointer",
+    boxShadow: "0 6px 20px rgba(37,99,235,0.3)",
   },
+
   link: {
     marginTop: "20px",
     textAlign: "center",
     fontSize: "14px",
-    color: "#718096",
+    color: "#64748b",
   },
+
   linkText: {
-    color: "#2b6cb0",
+    color: "#2563eb",
+    fontWeight: "600",
     textDecoration: "none",
-    fontWeight: "500",
   },
 };

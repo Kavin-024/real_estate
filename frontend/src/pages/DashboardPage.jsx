@@ -105,57 +105,187 @@ export default function DashboardPage() {
 }
 
 const styles = {
-  page: { minHeight: "100vh", backgroundColor: "#f0f4f8" },
+  page: {
+    minHeight: "100vh",
+    background: "#f8fafc",
+    fontFamily: "'Inter', sans-serif",
+    color: "#1e293b",
+  },
+
   header: {
-    backgroundColor: "#fff",
+    background: "#ffffff",
     padding: "20px 40px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+    borderBottom: "1px solid #e2e8f0",
+    position: "sticky",
+    top: 0,
+    zIndex: 10,
   },
-  title: { margin: 0, fontSize: "22px", fontWeight: "600", color: "#1a202c" },
-  subtitle: { margin: "4px 0 0", fontSize: "13px", color: "#718096" },
-  headerButtons: { display: "flex", gap: "12px" },
+
+  title: {
+    margin: 0,
+    fontSize: "24px",
+    fontWeight: "700",
+  },
+
+  subtitle: {
+    marginTop: "4px",
+    fontSize: "13px",
+    color: "#64748b",
+  },
+
+  headerButtons: {
+    display: "flex",
+    gap: "12px",
+  },
+
   addBtn: {
-    padding: "10px 20px", backgroundColor: "#2b6cb0", color: "#fff",
-    border: "none", borderRadius: "8px", fontSize: "14px", fontWeight: "600", cursor: "pointer",
+    padding: "10px 18px",
+    background: "#2563eb",
+    color: "#fff",
+    border: "none",
+    borderRadius: "10px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
+    boxShadow: "0 4px 12px rgba(37,99,235,0.25)",
   },
+
   logoutBtn: {
-    padding: "10px 20px", backgroundColor: "#fff", color: "#e53e3e",
-    border: "1px solid #e53e3e", borderRadius: "8px", fontSize: "14px", fontWeight: "600", cursor: "pointer",
+    padding: "10px 18px",
+    background: "#fff",
+    color: "#ef4444",
+    border: "1px solid #ef4444",
+    borderRadius: "10px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
   },
-  content: { padding: "30px 40px" },
-  sectionTitle: { fontSize: "18px", fontWeight: "600", color: "#2d3748", marginBottom: "20px" },
-  info: { color: "#718096" },
-  error: { color: "#e53e3e" },
+
+  content: {
+    padding: "40px",
+    maxWidth: "1300px",
+    margin: "auto",
+  },
+
+  sectionTitle: {
+    fontSize: "20px",
+    fontWeight: "700",
+    marginBottom: "20px",
+  },
+
+  info: {
+    color: "#64748b",
+  },
+
+  error: {
+    color: "#ef4444",
+  },
+
   emptyBox: {
-    textAlign: "center", padding: "60px", backgroundColor: "#fff",
-    borderRadius: "12px", color: "#718096",
+    textAlign: "center",
+    padding: "60px",
+    background: "#ffffff",
+    borderRadius: "16px",
+    boxShadow: "0 6px 20px rgba(0,0,0,0.05)",
   },
-  grid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" },
+
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+    gap: "24px",
+  },
+
   card: {
-    backgroundColor: "#fff", borderRadius: "12px",
-    padding: "20px", boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+    background: "#ffffff",
+    borderRadius: "16px",
+    padding: "20px",
+    boxShadow: "0 6px 20px rgba(0,0,0,0.06)",
+    transition: "all 0.3s ease",
+    cursor: "pointer",
   },
-  cardHeader: { display: "flex", justifyContent: "space-between", marginBottom: "10px" },
+
+  cardHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: "10px",
+  },
+
   badge: {
-    padding: "3px 10px", backgroundColor: "#ebf8ff", color: "#2b6cb0",
-    borderRadius: "20px", fontSize: "12px", fontWeight: "500", textTransform: "capitalize",
+    padding: "4px 10px",
+    background: "#e0f2fe",
+    color: "#0284c7",
+    borderRadius: "999px",
+    fontSize: "12px",
+    fontWeight: "600",
+    textTransform: "capitalize",
   },
-  available: { fontSize: "12px", color: "#38a169", fontWeight: "500" },
-  sold: { fontSize: "12px", color: "#e53e3e", fontWeight: "500" },
-  cardTitle: { margin: "0 0 6px", fontSize: "16px", fontWeight: "600", color: "#2d3748" },
-  cardText: { margin: "0 0 4px", fontSize: "13px", color: "#718096" },
-  cardPrice: { margin: "0 0 8px", fontSize: "16px", fontWeight: "700", color: "#2b6cb0" },
-  cardDesc: { margin: "0 0 16px", fontSize: "13px", color: "#718096", lineHeight: "1.5" },
-  cardActions: { display: "flex", gap: "10px" },
+
+  available: {
+    fontSize: "12px",
+    color: "#16a34a",
+    fontWeight: "600",
+  },
+
+  sold: {
+    fontSize: "12px",
+    color: "#ef4444",
+    fontWeight: "600",
+  },
+
+  cardTitle: {
+    fontSize: "18px",
+    fontWeight: "700",
+    marginBottom: "6px",
+  },
+
+  cardText: {
+    fontSize: "13px",
+    color: "#64748b",
+  },
+
+  cardPrice: {
+    fontSize: "20px",
+    fontWeight: "800",
+    color: "#2563eb",
+    margin: "10px 0",
+  },
+
+  cardDesc: {
+    fontSize: "13px",
+    color: "#64748b",
+    marginBottom: "16px",
+    lineHeight: "1.5",
+  },
+
+  cardActions: {
+    display: "flex",
+    gap: "10px",
+  },
+
   editBtn: {
-    flex: 1, padding: "8px", backgroundColor: "#ebf8ff", color: "#2b6cb0",
-    border: "none", borderRadius: "6px", fontSize: "13px", fontWeight: "600", cursor: "pointer",
+    flex: 1,
+    padding: "10px",
+    background: "#2563eb",
+    color: "#fff",
+    border: "none",
+    borderRadius: "8px",
+    fontSize: "13px",
+    fontWeight: "600",
+    cursor: "pointer",
   },
+
   deleteBtn: {
-    flex: 1, padding: "8px", backgroundColor: "#fff5f5", color: "#e53e3e",
-    border: "none", borderRadius: "6px", fontSize: "13px", fontWeight: "600", cursor: "pointer",
+    flex: 1,
+    padding: "10px",
+    background: "#fee2e2",
+    color: "#ef4444",
+    border: "none",
+    borderRadius: "8px",
+    fontSize: "13px",
+    fontWeight: "600",
+    cursor: "pointer",
   },
 };
